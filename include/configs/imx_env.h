@@ -28,6 +28,8 @@
 #define MFG_NAND_FIT_PARTITION ""
 #endif
 
+#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
+
 #define CONFIG_MFG_ENV_SETTINGS_DEFAULT \
 	"mfgtool_args=setenv bootargs console=${console},${baudrate} " \
 		"rdinit=/linuxrc " \
