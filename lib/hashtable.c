@@ -799,7 +799,7 @@ static int drop_var_from_set(const char *name, int nvars, char * vars[])
 
 int himport_r(struct hsearch_data *htab,
 		const char *env, size_t size, const char sep, int flag,
-		int crlf_is_lf, int nvars, char * const vars[])
+		int crlf_is_lf, int nvars, char * const vars[], int validate)
 {
 	char *data, *sp, *dp, *name, *value;
 	char *localvars[nvars];
@@ -943,7 +943,22 @@ int himport_r(struct hsearch_data *htab,
 		/* Skip variables which are not supposed to be processed */
 		if (!drop_var_from_set(name, nvars, localvars))
 			continue;
-
+		
+		char *p = value;
+		int valid = 1;
+		if (validate) {
+			while (*p++) {
+				if (*p == ' ' && *(p + 1) != '\0') {
+					printf("himport_r: !!! space found in value, ignoring env, env [%s], value:[%s]\n\n", name, value);
+					valid = 0;
+					continue;
+				}
+			}
+		}
+		if (valid == 0){
+			continue;
+		}
+		
 		/* enter into hash table */
 		e.key = name;
 		e.data = value;
