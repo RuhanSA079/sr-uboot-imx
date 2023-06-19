@@ -135,7 +135,7 @@
 		  "setenv bootargs \"fde_helper=enabled console=${console} snapd_recovery_mode=${snapd_recovery_mode} snapd_recovery_system=${snapd_recovery_system} ${snapd_standard_params}\";" \
 		  "setenv kernel_prefix \"/systems/${snapd_recovery_system}/kernel/\"; " \
 		"fi; " \
-	"run loadfiles\0";
+	"run loadfiles;\0"
 
 /* Link Definitions */
 #define CONFIG_LOADADDR			0x40480000
