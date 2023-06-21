@@ -481,8 +481,6 @@
 	pinctrl_uart2: uart2grp {
 		fsl,pins = <
 			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX	0x49
-			
-			/*MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX	0x49 Default pin*/
 			MX8MP_IOMUXC_SAI3_TXC__UART2_DCE_TX	0x49
 		>;
 	};
