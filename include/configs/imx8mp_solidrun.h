@@ -106,7 +106,7 @@
 	"mmc_seed_part=1\0" \
 	"mmc_boot_part=2\0" \
 	"devtype=mmc\0" \
-	"mmcdev=1\0" \
+	"mmcdev=2\0" \
 	"mmcpart=1\0" \
 	"load_uc=" \
       		"setenv kernel_bootpart ${mmc_seed_part};"\
