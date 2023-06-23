@@ -625,7 +625,8 @@ int arch_cpu_init(void)
 		if (readl(&ocotp->ctrl) & 0x200)
 			writel(0x200, &ocotp->ctrl_clr);
 	}
-
+	/*RuhanvdB -> Patch to enable CAAM during boot*/
+	caam_open();
 	return 0;
 }
 
