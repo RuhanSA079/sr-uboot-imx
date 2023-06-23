@@ -38,14 +38,14 @@ void board_late_mmc_env_init(void)
 
 	if (!check_mmc_autodetect())
 		return;
-
+	/* Disable overrides on eMMC device
 	env_set_ulong("mmcdev", dev_no);
 
-	/* Set mmcblk env */
+	Set mmcblk env
 	sprintf(mmcblk, "/dev/mmcblk%dp2 rootwait rw",
 		mmc_map_to_kernel_blk(dev_no));
 	env_set("mmcroot", mmcblk);
-
-	sprintf(cmd, "mmc dev %d", dev_no);
+	*/
+	sprintf(cmd, "mmc dev %d", 2);
 	run_command(cmd, 0);
 }
