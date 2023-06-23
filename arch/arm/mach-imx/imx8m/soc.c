@@ -30,7 +30,6 @@
 #include <errno.h>
 #include <fdt_support.h>
 #include <fsl_wdog.h>
-#include <fsl_caam.h>
 #include <imx_sip.h>
 #include <linux/arm-smccc.h>
 #include <linux/bitops.h>
@@ -626,8 +625,6 @@ int arch_cpu_init(void)
 		if (readl(&ocotp->ctrl) & 0x200)
 			writel(0x200, &ocotp->ctrl_clr);
 	}
-	/*RuhanvdB -> Patch to enable CAAM during boot*/
-	caam_open();
 	return 0;
 }
 
@@ -1449,6 +1446,14 @@ int arch_misc_init(void)
 			continue;
 	}
 #endif
+	// if (IS_ENABLED(CONFIG_FSL_CAAM)) {
+	// 	struct udevice *dev;
+	// 	int ret;
+
+	// 	ret = uclass_get_device_by_driver(UCLASS_MISC, DM_DRIVER_GET(caam_jr), &dev);
+	// 	if (ret)
+	// 		printf("Failed to initialize %s: %d\n", dev->name, ret);
+	// }
 	acquire_buildinfo();
 
 	return 0;
