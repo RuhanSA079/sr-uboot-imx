@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <fdt_support.h>
 #include <fsl_wdog.h>
+#include <fs_caam.h>
 #include <imx_sip.h>
 #include <linux/arm-smccc.h>
 #include <linux/bitops.h>
