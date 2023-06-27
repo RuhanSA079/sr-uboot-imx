@@ -6,6 +6,7 @@
  * Based on the mpc512x iim code:
  * Copyright 2008 Silicon Turnkey Express, Inc.
  * Martha Marx <mmarx@silicontkx.com>
+ * Added functionality to read fuses from iMX8 processor to env, to verify and program from uboot script/env.
  */
 
 #include <common.h>
@@ -64,15 +65,97 @@ static int do_fuse(struct cmd_tbl *cmdtp, int flag, int argc,
 		printf("Reading bank %u:\n", bank);
 		for (i = 0; i < cnt; i++, word++) {
 			if (!(i % 4))
-				printf("\nWord 0x%.8x:", word);
+			{
+				/*printf("\nWord 0x%.8x:", word);*/
+			}
+				
 
 			ret = fuse_read(bank, word, &val);
 			if (ret)
 				goto err;
 
-			printf(" %.8x", val);
+			printf("%.8x", val);
 		}
 		putc('\n');
+	} else if (!strcmp(op, "habfuseload")){ /* RuhanvdB -> Custom method to get programmed eFuses into u-boot variables.*/
+		printf("[HAB] Loading fuse values into env...\n");
+		/* RuhanvdB -> We know that we can this command to load values from and to the device... */
+		/* env_set("TestHABVarOne", "something"); */
+		ret = fuse_read(6, 0, &val);
+                if (ret)
+                {
+			goto err;
+		}
+		char hex_val[50];
+		sprintf(hex_val, "%x", val);
+		env_set("hab_fuse_b6_w0", hex_val);
+
+		ret = fuse_read(6, 1, &val);
+                if (ret)
+                {
+                        goto err;
+                }
+                sprintf(hex_val, "%x", val);
+                env_set("hab_fuse_b6_w1", hex_val);
+
+		ret = fuse_read(6, 2, &val);
+                if (ret)
+                {
+                        goto err;
+                }
+                sprintf(hex_val, "%x", val);
+                env_set("hab_fuse_b6_w2", hex_val);
+
+		ret = fuse_read(6, 3, &val);
+                if (ret)
+                {
+                        goto err;
+                }
+                sprintf(hex_val, "%x", val);
+                env_set("hab_fuse_b6_w3", hex_val);
+
+		/*RuhanvdB -> Reading second bank of eFuses */
+		ret = fuse_read(7, 0, &val);
+                if (ret)
+                {
+                        goto err;
+                }
+                sprintf(hex_val, "%x", val);
+                env_set("hab_fuse_b7_w0", hex_val);
+
+                ret = fuse_read(7, 1, &val);
+                if (ret)
+                {
+                        goto err;
+                }
+                sprintf(hex_val, "%x", val);
+                env_set("hab_fuse_b7_w1", hex_val);
+
+                ret = fuse_read(7, 2, &val);
+                if (ret)
+                {
+                        goto err;
+                }
+                sprintf(hex_val, "%x", val);
+                env_set("hab_fuse_b7_w2", hex_val);
+
+                ret = fuse_read(7, 3, &val);
+                if (ret)
+                {
+                        goto err;
+                }
+                sprintf(hex_val, "%x", val);
+                env_set("hab_fuse_b7_w3", hex_val);
+
+		/* RuhanvdB -> Get the HAB closed state and JTAG fuse */
+		ret = fuse_read(1, 3, &val);
+                if (ret)
+                {
+                        goto err;
+                }
+                sprintf(hex_val, "%x", val);
+                env_set("hab_fuse_states", hex_val);
+
 	} else if (!strcmp(op, "sense")) {
 		if (argc == 2)
 			cnt = 1;
